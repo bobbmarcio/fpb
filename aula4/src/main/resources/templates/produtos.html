@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <h1>Produto Manager</h1>
+        </div>
+        <nav>
+            <a href="/" class="nav-link">Home</a>
+            <a href="/produtos" class="nav-link">Produtos</a>
+            <a href="/produtos/adicionar" class="nav-link">Adicionar Produto</a>
+        </nav>
+    </header>
+
+    <div th:if="${sucesso}" class="success-message">
+        <p th:text="${sucesso}"></p>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produto : ${produtos}">
+                    <td th:text="${produto.id}"></td>
+                    <td th:text="${produto.nome}"></td>
+                    <td th:text="${produto.preco}"></td>
+                    <td>
+                        <div class="actions">
+                            <a th:href="@{'/produtos/editar?id=' + ${produto.id}}" title="Editar" class="action-button edit">
+                                <img src="drawable.icon/edit-icon.png" alt="Editar" class="icon">
+                            </a>
+                            <form th:action="@{'/produtos/deletar'}" method="post" onsubmit="return confirm('Tem certeza que deseja deletar este produto?');">
+                                <input type="hidden" name="id" th:value="${produto.id}">
+                                <button type="submit" class="action-button delete"></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="button-container">
+        <a th:href="@{/produtos/adicionar}" class="button">Adicionar Novo Produto</a>
+    </div>
+</body>
+</html>
